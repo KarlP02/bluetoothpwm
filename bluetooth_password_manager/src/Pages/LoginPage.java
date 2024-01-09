@@ -24,15 +24,15 @@ public class LoginPage implements ActionListener
         userIDLabel.setBounds(50, 100, 75, 25);
         userPasswordLabel.setBounds(50, 150, 75, 25);
 
-        userIDField.setBounds(125, 100, 200, 25);
-        userPasswordField.setBounds(125, 150, 200, 25);
+        userIDField.setBounds(150, 100, 200, 25);
+        userPasswordField.setBounds(150, 150, 200, 25);
 
-        loginButton.setBounds(125, 200, 100, 25);
+        loginButton.setBounds(150, 200, 100, 25);
         loginButton.addActionListener(this);
-        registerPageButton.setBounds(225, 200, 100, 25);
+        registerPageButton.setBounds(250, 200, 100, 25);
         registerPageButton.addActionListener(this);
 
-        messageLabel.setBounds(125, 250, 250 ,35);
+        messageLabel.setBounds(150, 225, 250 ,35);
 
         frame.add(userIDLabel);
         frame.add(userPasswordLabel);
@@ -46,6 +46,7 @@ public class LoginPage implements ActionListener
         frame.setSize(500, 350);
         frame.setLayout(null);
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }
 
     @Override
@@ -59,15 +60,15 @@ public class LoginPage implements ActionListener
             try {
                 reader = new BufferedReader(new FileReader("123asd.txt"));
                 String line;
+                int i = 0;
                 while ((line = reader.readLine()) != null) {
-                    for (int i = 0; i < 2; i++) {
-                        if (i == 0) {
-                            fileID = line;
-                        }
-                        if (i == 1) {
-                            filePassword = line;
-                        }
+                    if (i == 0) {
+                        fileID = line;
                     }
+                    if (i == 1) {
+                        filePassword = line;
+                    }
+                    i++;
                 }
                 reader.close();
             } catch (IOException c) {
@@ -82,11 +83,11 @@ public class LoginPage implements ActionListener
                     WelcomePage welcomePage = new WelcomePage(userID);
                 } else {
                     messageLabel.setForeground(Color.red);
-                    messageLabel.setText("Login failed");
+                    messageLabel.setText("Login failed pw");
                 }
             } else {
                 messageLabel.setForeground(Color.red);
-                messageLabel.setText("Login failed");
+                messageLabel.setText("Login failed id");
             }
         }
 

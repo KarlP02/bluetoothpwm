@@ -22,20 +22,20 @@ public class RegisterPage implements ActionListener {
     JLabel messageLabel = new JLabel("");
 
     RegisterPage() {
-        userIDLabel.setBounds(50, 100, 75, 25);
-        userPasswordLabel.setBounds(50, 150, 75, 25);
-        userPasswordAgainLabel.setBounds(50, 200, 75, 25);
+        userIDLabel.setBounds(50, 75, 75, 25);
+        userPasswordLabel.setBounds(50, 125, 75, 25);
+        userPasswordAgainLabel.setBounds(50, 175, 75, 25);
 
-        userIDField.setBounds(125, 100, 200, 25);
-        userPasswordField.setBounds(125, 150, 200, 25);
-        userPasswordAgainField.setBounds(125, 200, 200, 25);
+        userIDField.setBounds(150, 75, 200, 25);
+        userPasswordField.setBounds(150, 125, 200, 25);
+        userPasswordAgainField.setBounds(150, 175, 200, 25);
 
-        registerButton.setBounds(125, 250, 100, 25);
+        registerButton.setBounds(150, 225, 100, 25);
         registerButton.addActionListener(this);
-        backButton.setBounds(225, 250, 100 ,25);
+        backButton.setBounds(250, 225, 100 ,25);
         backButton.addActionListener(this);
 
-        messageLabel.setBounds(125, 300, 250, 35);
+        messageLabel.setBounds(150, 250, 350, 35);
 
         frame.add(userIDLabel);
         frame.add(userPasswordLabel);
@@ -51,6 +51,7 @@ public class RegisterPage implements ActionListener {
         frame.setSize(500, 350);
         frame.setLayout(null);
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }
 
     @Override
@@ -59,20 +60,34 @@ public class RegisterPage implements ActionListener {
             String userID = userIDField.getText();
             String password1 = String.valueOf(userPasswordField.getPassword());
             String password2 = String.valueOf(userPasswordAgainField.getPassword());
-            if (password1.equals(password2)) {
-                try {
-                    writer = new BufferedWriter(new FileWriter("123asd.txt"));
-                    writer.write(userID);
-                    writer.write("\n"+password2);
-                    writer.close();
-                } catch (IOException c) {
-                    throw new RuntimeException(c);
+
+            if (userID.length() >= 4 && userID.length() <= 20) {
+                if (password1.length() >= 12 && password1.length() <= 50) {
+                    if (password1.equals(password2)) {
+                        try {
+                            writer = new BufferedWriter(new FileWriter("123asd.txt"));
+                            writer.write(userID);
+                            writer.write("\n" + password2);
+                            writer.close();
+                            messageLabel.setForeground(Color.green);
+                            messageLabel.setText("account made successfully");
+                        } catch (IOException c) {
+                            throw new RuntimeException(c);
+                        }
+                    } else {
+                        messageLabel.setForeground(Color.red);
+                        messageLabel.setText("passwords do not match");
+                    }
+                } else {
+                    messageLabel.setForeground(Color.red);
+                    messageLabel.setText("password must be between 12 and 50 characters long");
                 }
             } else {
                 messageLabel.setForeground(Color.red);
-                messageLabel.setText("passwords do not match");
+                messageLabel.setText("username must be between 4 and 20 characters long");
             }
         }
+
         if (e.getSource() == backButton) {
             frame.dispose();
             LoginPage loginPage = new LoginPage();
