@@ -31,8 +31,10 @@ public class RegisterPage implements ActionListener {
         userPasswordAgainField.setBounds(150, 175, 200, 25);
 
         registerButton.setBounds(150, 225, 100, 25);
+        registerButton.setFocusable(false);
         registerButton.addActionListener(this);
         backButton.setBounds(250, 225, 100 ,25);
+        backButton.setFocusable(false);
         backButton.addActionListener(this);
 
         messageLabel.setBounds(150, 250, 350, 35);

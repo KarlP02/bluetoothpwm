@@ -33,8 +33,10 @@ public class AddPage implements ActionListener {
         passwordField.setBounds(150, 175, 200, 25);
 
         addButton.setBounds(150, 225, 100, 25);
+        addButton.setFocusable(false);
         addButton.addActionListener(this);
         clearButton.setBounds(250, 225, 100 ,25);
+        clearButton.setFocusable(false);
         clearButton.addActionListener(this);
 
         messageLabel.setBounds(150, 250, 350, 35);

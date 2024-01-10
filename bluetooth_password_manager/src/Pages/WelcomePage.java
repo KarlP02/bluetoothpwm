@@ -1,6 +1,7 @@
 package Pages;
 
 import Components.PrintInfo;
+import Components.PrintPW;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,17 +14,15 @@ import java.io.IOException;
 public class WelcomePage implements ActionListener {
     BufferedReader reader;
     JFrame frame = new JFrame();
-    JLabel welcomeLabel = new JLabel("Hello, ");
     JButton addButton = new JButton("add");
     JButton refreshButton = new JButton("refresh");
 
     WelcomePage() {
-        welcomeLabel.setBounds(10, 10, 200, 35);
-        welcomeLabel.setText("Hello!");
-
-        addButton.setBounds(10, 50, 100, 25);
+        addButton.setBounds(10, 10, 100, 25);
+        addButton.setFocusable(false);
         addButton.addActionListener(this);
-        refreshButton.setBounds(110, 50, 100 ,25);
+        refreshButton.setBounds(110, 10, 100 ,25);
+        refreshButton.setFocusable(false);
         refreshButton.addActionListener(this);
 
         try {
@@ -31,7 +30,7 @@ public class WelcomePage implements ActionListener {
             String line;
             int i = 0;
             int j = 1;
-            int height = 100;
+            int height = 50;
 
             // does not work
             while ((line = reader.readLine()) != null) {
@@ -52,7 +51,7 @@ public class WelcomePage implements ActionListener {
                 if (i == 2) {
                     JLabel label = new JLabel("password:");
                     label.setBounds(10, height + j, 75, 25);
-                    PrintInfo printInfo = new PrintInfo(height, j, line, frame);
+                    PrintPW printPW = new PrintPW(height, j, line, frame);
 
                     frame.add(label);
 
@@ -68,7 +67,6 @@ public class WelcomePage implements ActionListener {
             throw new RuntimeException(c);
         }
 
-        frame.add(welcomeLabel);
         frame.add(addButton);
         frame.add(refreshButton);
 

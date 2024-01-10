@@ -16,6 +16,7 @@ public class PrintInfo implements ActionListener {
         printLine.setText(line);
 
         copyButton.setBounds(325, height + j, 100, 25);
+        copyButton.setFocusable(false);
         copyButton.addActionListener(this);
 
         frame.add(printLine);
