@@ -28,8 +28,10 @@ public class LoginPage implements ActionListener
         userPasswordField.setBounds(150, 150, 200, 25);
 
         loginButton.setBounds(150, 200, 100, 25);
+        loginButton.setFocusable(false);
         loginButton.addActionListener(this);
         registerPageButton.setBounds(250, 200, 100, 25);
+        registerPageButton.setFocusable(false);
         registerPageButton.addActionListener(this);
 
         messageLabel.setBounds(150, 225, 250 ,35);
@@ -80,7 +82,7 @@ public class LoginPage implements ActionListener
                     messageLabel.setForeground(Color.green);
                     messageLabel.setText("Login successful");
                     frame.dispose();
-                    WelcomePage welcomePage = new WelcomePage(userID);
+                    WelcomePage welcomePage = new WelcomePage();
                 } else {
                     messageLabel.setForeground(Color.red);
                     messageLabel.setText("Login failed");
