@@ -83,11 +83,11 @@ public class LoginPage implements ActionListener
                     WelcomePage welcomePage = new WelcomePage(userID);
                 } else {
                     messageLabel.setForeground(Color.red);
-                    messageLabel.setText("Login failed pw");
+                    messageLabel.setText("Login failed");
                 }
             } else {
                 messageLabel.setForeground(Color.red);
-                messageLabel.setText("Login failed id");
+                messageLabel.setText("Login failed");
             }
         }
 
