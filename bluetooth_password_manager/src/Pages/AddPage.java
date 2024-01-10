@@ -90,5 +90,11 @@ public class AddPage implements ActionListener {
                 messageLabel.setText("title field is empty");
             }
         }
+
+        if (e.getSource() == clearButton) {
+            titleField.setText("");
+            loginField.setText("");
+            passwordField.setText("");
+        }
     }
 }
