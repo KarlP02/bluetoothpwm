@@ -80,7 +80,7 @@ public class LoginPage implements ActionListener
                     messageLabel.setForeground(Color.green);
                     messageLabel.setText("Login successful");
                     frame.dispose();
-                    WelcomePage welcomePage = new WelcomePage(userID);
+                    WelcomePage welcomePage = new WelcomePage();
                 } else {
                     messageLabel.setForeground(Color.red);
                     messageLabel.setText("Login failed");
