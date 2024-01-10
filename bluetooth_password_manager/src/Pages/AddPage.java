@@ -1,10 +1,16 @@
 package Pages;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class AddPage implements ActionListener {
+    BufferedWriter writer;
     JFrame frame = new JFrame();
     JButton addButton = new JButton("add");
     JButton clearButton = new JButton("clear");
@@ -52,6 +58,37 @@ public class AddPage implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+        if (e.getSource() == addButton) {
+            String title = titleField.getText();
+            String login = loginField.getText();
+            String password = String.valueOf(passwordField.getPassword());
+
+            if (!title.isEmpty()) {
+                if (!login.isEmpty()) {
+                    if (!password.isEmpty()) {
+                        try {
+                            writer = new BufferedWriter(new FileWriter("asd123.txt", true));
+                            writer.write(title + "\n");
+                            writer.write(login + "\n");
+                            writer.write(password + "\n");
+                            writer.close();
+                            messageLabel.setForeground(Color.green);
+                            messageLabel.setText("account added successfully");
+                        } catch (IOException c) {
+                            throw new RuntimeException(c);
+                        }
+                    } else {
+                        messageLabel.setForeground(Color.red);
+                        messageLabel.setText("password field is empty");
+                    }
+                } else {
+                    messageLabel.setForeground(Color.red);
+                    messageLabel.setText("login field is empty");
+                }
+            } else {
+                messageLabel.setForeground(Color.red);
+                messageLabel.setText("title field is empty");
+            }
+        }
     }
 }
