@@ -23,7 +23,7 @@ public class AddPage implements ActionListener {
     JLabel messageLabel = new JLabel("");
 
 
-    public AddPage() {
+    AddPage() {
         titleLabel.setBounds(50, 75, 75, 25);
         loginLabel.setBounds(50, 125, 75, 25);
         passwordLabel.setBounds(50, 175, 75, 25);
