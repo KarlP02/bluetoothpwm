@@ -16,6 +16,7 @@ public class WelcomePage implements ActionListener {
     JFrame frame = new JFrame();
     JButton addButton = new JButton("add");
     JButton refreshButton = new JButton("refresh");
+    JButton bluetoothButton = new JButton("sharing");
 
     WelcomePage() {
         addButton.setBounds(10, 10, 100, 25);
@@ -24,15 +25,18 @@ public class WelcomePage implements ActionListener {
         refreshButton.setBounds(110, 10, 100 ,25);
         refreshButton.setFocusable(false);
         refreshButton.addActionListener(this);
+        bluetoothButton.setBounds(1150, 10, 100 ,25);
+        bluetoothButton.setFocusable(false);
+        bluetoothButton.addActionListener(this);
+
 
         try {
             reader = new BufferedReader(new FileReader("asd123.txt"));
             String line;
             int i = 0;
-            int j = 1;
+            int j = 0;
             int height = 50;
 
-            // does not work
             while ((line = reader.readLine()) != null) {
                 if (i == 0) {
                     JLabel label = new JLabel("title:");
@@ -69,6 +73,7 @@ public class WelcomePage implements ActionListener {
 
         frame.add(addButton);
         frame.add(refreshButton);
+        frame.add(bluetoothButton);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1280, 720);
@@ -87,5 +92,10 @@ public class WelcomePage implements ActionListener {
             frame.dispose();
             WelcomePage welcomePage = new WelcomePage();
         }
+
+        if (e.getSource() == bluetoothButton) {
+            BluetoothPage bluetoothPage = new BluetoothPage();
+        }
+
     }
 }
