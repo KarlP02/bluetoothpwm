@@ -1,5 +1,7 @@
 package Pages;
 
+import Components.Cryption;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -69,14 +71,18 @@ public class AddPage implements ActionListener {
                 if (!login.isEmpty()) {
                     if (!password.isEmpty()) {
                         try {
+                            Cryption aes = new Cryption();
+                            aes.initFromStrings("WbppAl3DiX8oZYf/0OlspQ==", "D0Z7l4n/gyRi4Bqe");
+                            String encryptedMessage = aes.encryptWithKeys(password);
+
                             writer = new BufferedWriter(new FileWriter("asd123.txt", true));
                             writer.write(title + "\n");
                             writer.write(login + "\n");
-                            writer.write(password + "\n");
+                            writer.write(encryptedMessage + "\n");
                             writer.close();
                             messageLabel.setForeground(Color.green);
                             messageLabel.setText("account added successfully");
-                        } catch (IOException c) {
+                        } catch (Exception c) {
                             throw new RuntimeException(c);
                         }
                     } else {
