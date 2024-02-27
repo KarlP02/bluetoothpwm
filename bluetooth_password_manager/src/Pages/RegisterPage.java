@@ -1,12 +1,14 @@
 package Pages;
 
+import Components.Encryption;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 
 public class RegisterPage implements ActionListener {
     BufferedWriter writer;
@@ -20,6 +22,7 @@ public class RegisterPage implements ActionListener {
     JLabel userPasswordLabel = new JLabel("password:");
     JLabel userPasswordAgainLabel = new JLabel("password:");
     JLabel messageLabel = new JLabel("");
+    Encryption encryption = new Encryption();
 
     RegisterPage() {
         userIDLabel.setBounds(50, 75, 75, 25);
@@ -67,13 +70,27 @@ public class RegisterPage implements ActionListener {
                 if (password1.length() >= 12 && password1.length() <= 50) {
                     if (password1.equals(password2)) {
                         try {
+                            File mainLoginFile = new File("mainLogin.txt");
+                            mainLoginFile.delete();
+                            mainLoginFile.createNewFile();
+                            File loginsFile = new File("logins.txt");
+                            loginsFile.delete();
+                            loginsFile.createNewFile();
+                            File loginsKeysFile = new File("loginsKeys.txt");
+                            loginsKeysFile.delete();
+                            loginsKeysFile.createNewFile();
+
+                            String encryptedLogin = encryption.Encryption(userID);
+                            String encryptedPassword = encryption.Encryption(password2);
+
                             writer = new BufferedWriter(new FileWriter("mainLogin.txt"));
-                            writer.write(userID);
-                            writer.write("\n" + password2);
+                            writer.write(encryptedLogin + "\n");
+                            writer.write(encryptedPassword + "\n");
                             writer.close();
+
                             messageLabel.setForeground(Color.green);
                             messageLabel.setText("account made successfully");
-                        } catch (IOException c) {
+                        } catch (Exception c) {
                             throw new RuntimeException(c);
                         }
                     } else {

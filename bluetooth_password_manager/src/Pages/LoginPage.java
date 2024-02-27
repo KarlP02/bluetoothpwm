@@ -1,5 +1,7 @@
 package Pages;
 
+import Components.Decryption;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,6 +21,7 @@ public class LoginPage implements ActionListener
     JLabel userIDLabel = new JLabel("username:");
     JLabel userPasswordLabel = new JLabel("password:");
     JLabel messageLabel = new JLabel("");
+    Decryption decryption = new Decryption();
 
     public LoginPage() {
         userIDLabel.setBounds(50, 100, 75, 25);
@@ -56,19 +59,25 @@ public class LoginPage implements ActionListener
         if (e.getSource() == loginButton) {
             String userID = userIDField.getText();
             String password = String.valueOf(userPasswordField.getPassword());
-            String fileID = "";
-            String filePassword = "";
+            String fileID;
+            String filePassword;
+            String decryptedID = "";
+            String decryptedPassword = "";
 
             try {
                 reader = new BufferedReader(new FileReader("mainLogin.txt"));
                 String line;
                 int i = 0;
+                int k = 1;
                 while ((line = reader.readLine()) != null) {
                     if (i == 0) {
                         fileID = line;
+                        decryptedID = decryption.Decryption(k, fileID);
+                        k += 2;
                     }
                     if (i == 1) {
                         filePassword = line;
+                        decryptedPassword = decryption.Decryption(k, filePassword);
                     }
                     i++;
                 }
@@ -77,8 +86,8 @@ public class LoginPage implements ActionListener
                 throw new RuntimeException(c);
             }
 
-            if (userID.equals(fileID)) {
-                if (password.equals(filePassword)) {
+            if (userID.equals(decryptedID)) {
+                if (password.equals(decryptedPassword)) {
                     messageLabel.setForeground(Color.green);
                     messageLabel.setText("Login successful");
                     frame.dispose();

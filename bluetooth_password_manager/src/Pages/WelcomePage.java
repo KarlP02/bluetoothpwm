@@ -31,16 +31,11 @@ public class WelcomePage implements ActionListener {
 
 
         try {
-            File loginsFile = new File("logins.txt");
-            loginsFile.createNewFile();
-            File loginsKeysFile = new File("loginsKeys.txt");
-            loginsKeysFile.createNewFile();
-
             reader = new BufferedReader(new FileReader("logins.txt"));
             String line;
             int i = 0;
             int j = 0;
-            int k = 1;
+            int k = 5;
             int height = 50;
 
             while ((line = reader.readLine()) != null) {

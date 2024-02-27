@@ -22,6 +22,7 @@ public class AddPage implements ActionListener {
     JLabel loginLabel = new JLabel("login:");
     JLabel passwordLabel = new JLabel("password:");
     JLabel messageLabel = new JLabel("");
+    Encryption encryption = new Encryption();
 
     AddPage() {
         titleLabel.setBounds(50, 75, 75, 25);
@@ -69,9 +70,15 @@ public class AddPage implements ActionListener {
                 if (!login.isEmpty()) {
                     if (!password.isEmpty()) {
                         try {
-                            Encryption encryptedTitle = new Encryption(title);
-                            Encryption encryptedLogin = new Encryption(login);
-                            Encryption encryptedPassword = new Encryption(password);
+                            String encryptedTitle = encryption.Encryption(title);
+                            String encryptedLogin = encryption.Encryption(login);
+                            String encryptedPassword = encryption.Encryption(password);
+
+                            writer = new BufferedWriter(new FileWriter("logins.txt", true));
+                            writer.write(encryptedTitle + "\n");
+                            writer.write(encryptedLogin + "\n");
+                            writer.write(encryptedPassword + "\n");
+                            writer.close();
 
                             messageLabel.setForeground(Color.green);
                             messageLabel.setText("account added successfully");

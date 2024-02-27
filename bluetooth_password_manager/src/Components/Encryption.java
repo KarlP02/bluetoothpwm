@@ -7,7 +7,7 @@ public class Encryption {
     BufferedWriter writer;
     Cryption aes = new Cryption();
 
-    public Encryption(String content) {
+    public String Encryption(String content) {
         try {
             aes.init();
             String encryptedContent = aes.encrypt(content);
@@ -19,10 +19,7 @@ public class Encryption {
             writer.write(iv + "\n");
             writer.close();
 
-            writer = new BufferedWriter(new FileWriter("logins.txt", true));
-            writer.write(encryptedContent + "\n");
-            writer.close();
-
+            return encryptedContent;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
