@@ -63,8 +63,11 @@ public class Cryption {
         return Base64.getDecoder().decode(data);
     }
 
-    private void exportKeys() {
-        encode(key.getEncoded());
-        encode(IV);
+    public String exportKey() {
+        return encode(key.getEncoded());
+    }
+
+    public String exportIV() {
+        return encode(IV);
     }
 }

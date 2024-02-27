@@ -72,8 +72,23 @@ public class AddPage implements ActionListener {
                             Cryption aes = new Cryption();
                             aes.init();
                             String encryptedTitle = aes.encrypt(title);
+                            String key1 = aes.exportKey();
+                            String iv1 = aes.exportIV();
                             String encryptedLogin = aes.encrypt(login);
+                            String key2 = aes.exportKey();
+                            String iv2 = aes.exportIV();
                             String encryptedPassword = aes.encrypt(password);
+                            String key3 = aes.exportKey();
+                            String iv3 = aes.exportIV();
+
+                            writer = new BufferedWriter(new FileWriter("loginsKeys.txt", true));
+                            writer.write(key1 + "\n");
+                            writer.write(iv1 + "\n");
+                            writer.write(key2 + "\n");
+                            writer.write(iv2 + "\n");
+                            writer.write(key3 + "\n");
+                            writer.write(iv3 + "\n");
+                            writer.close();
 
                             writer = new BufferedWriter(new FileWriter("logins.txt", true));
                             writer.write(encryptedTitle + "\n");

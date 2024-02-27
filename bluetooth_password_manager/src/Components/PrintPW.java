@@ -44,14 +44,6 @@ public class PrintPW implements ActionListener {
             String printLineText = printLine.getText();
             if (!printLineText.equals(hiddenLineText)){
                 printLine.setText(hiddenLineText);
-//                try {
-//                    Cryption aes = new Cryption();
-//                    aes.initWithStrings("WbppAl3DiX8oZYf/0OlspQ==", "D0Z7l4n/gyRi4Bqe");
-//                    String decryptedMessage = aes.decrypt(hiddenLineText);
-//                    printLine.setText(decryptedMessage);
-//                } catch (Exception ex) {
-//                    throw new RuntimeException(ex);
-//                }
             } else {
                 printLine.setText("********");
             }
