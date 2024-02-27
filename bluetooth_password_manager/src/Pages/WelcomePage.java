@@ -1,15 +1,13 @@
 package Pages;
 
+import Components.Decryption;
 import Components.PrintInfo;
 import Components.PrintPW;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class WelcomePage implements ActionListener {
     BufferedReader reader;
@@ -17,6 +15,8 @@ public class WelcomePage implements ActionListener {
     JButton addButton = new JButton("add");
     JButton refreshButton = new JButton("refresh");
     JButton bluetoothButton = new JButton("sharing");
+    Decryption decryption = new Decryption();
+
 
     WelcomePage() {
         addButton.setBounds(10, 10, 100, 25);
@@ -31,31 +31,38 @@ public class WelcomePage implements ActionListener {
 
 
         try {
-            reader = new BufferedReader(new FileReader("asd123.txt"));
+            reader = new BufferedReader(new FileReader("logins.txt"));
             String line;
             int i = 0;
             int j = 0;
+            int k = 5;
             int height = 50;
 
             while ((line = reader.readLine()) != null) {
                 if (i == 0) {
                     JLabel label = new JLabel("title:");
                     label.setBounds(10, height + j, 75, 25);
-                    PrintInfo printInfo = new PrintInfo(height, j, line, frame);
+                    String decryptedString = decryption.Decryption(k, line);
+                    PrintInfo printInfo = new PrintInfo(height, j, decryptedString, frame);
+                    k += 2;
 
                     frame.add(label);
                 }
                 if (i == 1) {
                     JLabel label = new JLabel("login:");
                     label.setBounds(10, height + j, 75, 25);
-                    PrintInfo printInfo = new PrintInfo(height, j, line, frame);
+                    String decryptedString = decryption.Decryption(k, line);
+                    PrintInfo printInfo = new PrintInfo(height, j, decryptedString, frame);
+                    k += 2;
 
                     frame.add(label);
                 }
                 if (i == 2) {
                     JLabel label = new JLabel("password:");
                     label.setBounds(10, height + j, 75, 25);
-                    PrintPW printPW = new PrintPW(height, j, line, frame);
+                    String decryptedString = decryption.Decryption(k, line);
+                    PrintPW printPW = new PrintPW(height, j, decryptedString, frame);
+                    k += 2;
 
                     frame.add(label);
 
