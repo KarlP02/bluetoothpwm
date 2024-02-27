@@ -8,8 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 public class AddPage implements ActionListener {
     BufferedWriter writer;
@@ -72,14 +70,17 @@ public class AddPage implements ActionListener {
                     if (!password.isEmpty()) {
                         try {
                             Cryption aes = new Cryption();
-                            aes.initFromStrings("WbppAl3DiX8oZYf/0OlspQ==", "D0Z7l4n/gyRi4Bqe");
-                            String encryptedMessage = aes.encryptWithKeys(password);
+                            aes.init();
+                            String encryptedTitle = aes.encrypt(title);
+                            String encryptedLogin = aes.encrypt(login);
+                            String encryptedPassword = aes.encrypt(password);
 
-                            writer = new BufferedWriter(new FileWriter("asd123.txt", true));
-                            writer.write(title + "\n");
-                            writer.write(login + "\n");
-                            writer.write(encryptedMessage + "\n");
+                            writer = new BufferedWriter(new FileWriter("logins.txt", true));
+                            writer.write(encryptedTitle + "\n");
+                            writer.write(encryptedLogin + "\n");
+                            writer.write(encryptedPassword + "\n");
                             writer.close();
+
                             messageLabel.setForeground(Color.green);
                             messageLabel.setText("account added successfully");
                         } catch (Exception c) {

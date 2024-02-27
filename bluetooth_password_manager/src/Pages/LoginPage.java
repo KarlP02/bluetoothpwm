@@ -60,7 +60,7 @@ public class LoginPage implements ActionListener
             String filePassword = "";
 
             try {
-                reader = new BufferedReader(new FileReader("123asd.txt"));
+                reader = new BufferedReader(new FileReader("mainLogin.txt"));
                 String line;
                 int i = 0;
                 while ((line = reader.readLine()) != null) {

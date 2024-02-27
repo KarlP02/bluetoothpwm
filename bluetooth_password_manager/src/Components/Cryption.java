@@ -24,7 +24,7 @@ public class Cryption {
         key = generator.generateKey();
     }
 
-    public void initFromStrings(String secretKey, String IV) {
+    public void initWithStrings(String secretKey, String IV) {
         key = new SecretKeySpec(decode(secretKey), "AES");
         this.IV = decode(IV);
     }
@@ -64,27 +64,7 @@ public class Cryption {
     }
 
     private void exportKeys() {
-        System.err.println("SecretKey : " + encode(key.getEncoded()));
-        System.err.println("IV : " + encode(IV));
+        encode(key.getEncoded());
+        encode(IV);
     }
-
-    public static void main(String[] args) {
-        try {
-            System.out.println("Hello");
-            Cryption aes = new Cryption();
-            System.out.println("Hello");
-            aes.init();
-            System.out.println("Hello");
-            String encryptedMessage = aes.encrypt("karl1234");
-            System.out.println("Hello");
-            String decryptedMessage = aes.decrypt(encryptedMessage);
-
-            System.err.println("Encrypted Message : " + encryptedMessage);
-            System.err.println("Decrypted Message : " + decryptedMessage);
-            aes.exportKeys();
-        } catch (Exception ignored) {
-        }
-    }
-    
-//    save two different keys and put the keys and iv into different file
 }

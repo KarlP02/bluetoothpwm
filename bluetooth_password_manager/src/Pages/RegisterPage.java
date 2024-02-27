@@ -67,7 +67,7 @@ public class RegisterPage implements ActionListener {
                 if (password1.length() >= 12 && password1.length() <= 50) {
                     if (password1.equals(password2)) {
                         try {
-                            writer = new BufferedWriter(new FileWriter("123asd.txt"));
+                            writer = new BufferedWriter(new FileWriter("mainLogin.txt"));
                             writer.write(userID);
                             writer.write("\n" + password2);
                             writer.close();

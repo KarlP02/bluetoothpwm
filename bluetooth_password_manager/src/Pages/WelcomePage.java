@@ -4,12 +4,9 @@ import Components.PrintInfo;
 import Components.PrintPW;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class WelcomePage implements ActionListener {
     BufferedReader reader;
@@ -31,7 +28,9 @@ public class WelcomePage implements ActionListener {
 
 
         try {
-            reader = new BufferedReader(new FileReader("asd123.txt"));
+            File newFile = new File("logins.txt");
+            newFile.createNewFile();
+            reader = new BufferedReader(new FileReader("logins.txt"));
             String line;
             int i = 0;
             int j = 0;
