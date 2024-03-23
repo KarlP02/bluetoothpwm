@@ -2,6 +2,7 @@ package Components;
 
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
+import javax.microedition.io.StreamConnectionNotifier;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -117,11 +118,12 @@ public class PrintDevices implements ActionListener {
                 String url = "btspp://localhost:" + serverUUID + ";name=FileServer";
 
                 // Open a connection
-                StreamConnection streamConnection = (StreamConnection) Connector.open(url);
-                OutputStream outStream = streamConnection.openOutputStream();
+                StreamConnectionNotifier streamConnectionNotifier = (StreamConnectionNotifier) Connector.open(url);
+                StreamConnection streamConnection = streamConnectionNotifier.acceptAndOpen();
 
                 // Read file and send it
                 FileInputStream fileInputStream = new FileInputStream(filePath);
+                OutputStream outStream = streamConnection.openOutputStream();
                 byte[] buffer = new byte[1024];
                 int bytesRead;
                 while ((bytesRead = fileInputStream.read(buffer)) != -1) {
@@ -132,6 +134,7 @@ public class PrintDevices implements ActionListener {
                 fileInputStream.close();
                 outStream.close();
                 streamConnection.close();
+                streamConnectionNotifier.close();
                 System.out.println("File sent successfully.");
             } catch (Exception c) {
                 c.printStackTrace();
@@ -147,7 +150,7 @@ public class PrintDevices implements ActionListener {
                 InputStream inStream = streamConnection.openInputStream();
 
                 // Create a file to store received data
-                FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+                FileOutputStream fileOutputStream = new FileOutputStream("received_file.txt");
                 byte[] buffer = new byte[1024];
                 int bytesRead;
                 while ((bytesRead = inStream.read(buffer)) != -1) {
