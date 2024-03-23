@@ -56,59 +56,83 @@ public class PrintDevices implements ActionListener {
 
                 System.out.println("Connected to: " + remoteDeviceAddress);
 
-                streamConnection.close();
+                if (e.getSource() == sendButton) {
+                    File fileToSend = new File("logins.txt");
+                    FileInputStream fileInputStream = new FileInputStream(fileToSend);
+                    OutputStream outputStream = streamConnection.openOutputStream();
 
-            } catch (IOException c) {
-                c.printStackTrace();
-            }
-        }
-        if (e.getSource() == sendButton) {
-            try {
-                String remoteDeviceAddress = printLine2.getText();
-                String connectionURL = "btspp://" + remoteDeviceAddress + ":1;authenticate=false;encrypt=false;master=false";
-                StreamConnection streamConnection = (StreamConnection) Connector.open(connectionURL);
-
-                File fileToSend = new File("logins.txt");
-                FileInputStream fileInputStream = new FileInputStream(fileToSend);
-                OutputStream outputStream = streamConnection.openOutputStream();
-
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
                 }
 
-                fileInputStream.close();
-                outputStream.close();
-                streamConnection.close();
-            } catch (IOException c) {
-                c.printStackTrace();
-            }
-        }
-        if (e.getSource() == receiveButton) {
-            try {
-                String remoteDeviceAddress = printLine2.getText();
-                String connectionURL = "btspp://" + remoteDeviceAddress + ":1;authenticate=false;encrypt=false;master=false";
-                StreamConnection streamConnection = (StreamConnection) Connector.open(connectionURL);
+                if (e.getSource() == receiveButton) {
+                    File fileToSend = new File("logins.txt");
+                    FileInputStream fileInputStream = new FileInputStream(fileToSend);
+                    OutputStream outputStream = streamConnection.openOutputStream();
 
-                InputStream inputStream = streamConnection.openInputStream();
-
-                File receivedFile = new File("logins.txt");
-                FileOutputStream fileOutputStream = new FileOutputStream(receivedFile);
-
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    fileOutputStream.write(buffer, 0, bytesRead);
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
                 }
 
-                fileOutputStream.close();
-                inputStream.close();
-                streamConnection.close();
+//                streamConnection.close();
+
             } catch (IOException c) {
                 c.printStackTrace();
             }
         }
+//        if (e.getSource() == sendButton) {
+//            try {
+//                String remoteDeviceAddress = printLine2.getText();
+//                String connectionURL = "btspp://" + remoteDeviceAddress + ":1;authenticate=false;encrypt=false;master=false";
+//                StreamConnection streamConnection = (StreamConnection) Connector.open(connectionURL);
+//
+//                File fileToSend = new File("logins.txt");
+//                FileInputStream fileInputStream = new FileInputStream(fileToSend);
+//                OutputStream outputStream = streamConnection.openOutputStream();
+//
+//                byte[] buffer = new byte[1024];
+//                int bytesRead;
+//                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+//                    outputStream.write(buffer, 0, bytesRead);
+//                }
+//
+//                fileInputStream.close();
+//                outputStream.close();
+//                streamConnection.close();
+//            } catch (IOException c) {
+//                c.printStackTrace();
+//            }
+//        }
+//        if (e.getSource() == receiveButton) {
+//            try {
+//                String remoteDeviceAddress = printLine2.getText();
+//                String connectionURL = "btspp://" + remoteDeviceAddress + ":1;authenticate=false;encrypt=false;master=false";
+//                StreamConnection streamConnection = (StreamConnection) Connector.open(connectionURL);
+//
+//                InputStream inputStream = streamConnection.openInputStream();
+//
+//                File receivedFile = new File("logins.txt");
+//                FileOutputStream fileOutputStream = new FileOutputStream(receivedFile);
+//
+//                byte[] buffer = new byte[1024];
+//                int bytesRead;
+//                while ((bytesRead = inputStream.read(buffer)) != -1) {
+//                    fileOutputStream.write(buffer, 0, bytesRead);
+//                }
+//
+//                fileOutputStream.close();
+//                inputStream.close();
+//                streamConnection.close();
+//            } catch (IOException c) {
+//                c.printStackTrace();
+//            }
+//        }
 
     }
 }
