@@ -1,5 +1,9 @@
 package Components;
 
+import javax.bluetooth.DiscoveryAgent;
+import javax.bluetooth.LocalDevice;
+import javax.bluetooth.RemoteDevice;
+import javax.bluetooth.UUID;
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
@@ -114,54 +118,53 @@ public class PrintDevices implements ActionListener {
 //        }
         if (e.getSource() == sendButton) {
             try {
-                // Create a connection URL
-                String url = "btspp://localhost:" + serverUUID + ";name=FileServer";
+                UUID uuid = new UUID(serverUUID, false);
 
-                // Open a connection
-                StreamConnectionNotifier streamConnectionNotifier = (StreamConnectionNotifier) Connector.open(url);
-                StreamConnection streamConnection = streamConnectionNotifier.acceptAndOpen();
+                StreamConnectionNotifier notifier = (StreamConnectionNotifier) Connector.open("btspp://localhost:" + uuid + "authenticate=false;encrypt=false;name=FileServer");
 
-                // Read file and send it
-                FileInputStream fileInputStream = new FileInputStream(filePath);
-                OutputStream outStream = streamConnection.openOutputStream();
+                System.out.println("Waiting for connection...");
+                StreamConnection connection = notifier.acceptAndOpen();
+                System.out.println("Client connected.");
+
+                OutputStream outputStream = connection.openOutputStream();
+
+                FileInputStream fileInputStream = new FileInputStream("logins.txt");
                 byte[] buffer = new byte[1024];
                 int bytesRead;
                 while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-                    outStream.write(buffer, 0, bytesRead);
+                    outputStream.write(buffer, 0, bytesRead);
                 }
 
-                // Clean up
-                fileInputStream.close();
-                outStream.close();
-                streamConnection.close();
-                streamConnectionNotifier.close();
-                System.out.println("File sent successfully.");
+//                fileInputStream.close();
+//                outputStream.close();
+//                connection.close();
+//                notifier.close();
+
+                System.out.println("File received successfully.");
             } catch (Exception c) {
                 c.printStackTrace();
             }
         }
         if (e.getSource() == receiveButton) {
             try {
-                // Create a connection URL
-                String url = "btspp://localhost:" + serverUUID + ";name=FileServer";
+                String remoteDeviceAddress = printLine2.getText();
+                String connectionURL = "btspp://" + remoteDeviceAddress + ":1;authenticate=false;encrypt=false;master=false";
+                StreamConnection streamConnection = (StreamConnection) Connector.open(connectionURL);
 
-                // Open a connection
-                StreamConnection streamConnection = (StreamConnection) Connector.open(url);
-                InputStream inStream = streamConnection.openInputStream();
+                File receivedFile = new File("logins.txt");
+                FileOutputStream fileOutputStream = new FileOutputStream(receivedFile);
+                InputStream inputStream = streamConnection.openInputStream();
 
-                // Create a file to store received data
-                FileOutputStream fileOutputStream = new FileOutputStream("received_file.txt");
                 byte[] buffer = new byte[1024];
                 int bytesRead;
-                while ((bytesRead = inStream.read(buffer)) != -1) {
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
                     fileOutputStream.write(buffer, 0, bytesRead);
                 }
 
-                // Clean up
-                fileOutputStream.close();
-                inStream.close();
-                streamConnection.close();
-                System.out.println("File received successfully.");
+//                fileOutputStream.close();
+//                inputStream.close();
+//                streamConnection.close();
+
             } catch (Exception c) {
                 c.printStackTrace();
             }
