@@ -5,12 +5,14 @@ import javax.microedition.io.StreamConnection;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class PrintDevices implements ActionListener {
     JLabel label = new JLabel("device:");
     JButton connectButton = new JButton("connect");
+    JButton sendButton = new JButton("send");
+    JButton receiveButton = new JButton("receive");
     JLabel printLine = new JLabel();
     JLabel printLine2 = new JLabel();
 
@@ -28,32 +30,81 @@ public class PrintDevices implements ActionListener {
         connectButton.setFocusable(false);
         connectButton.addActionListener(this);
 
+        sendButton.setBounds(625, height + j, 100, 25);
+        sendButton.setFocusable(false);
+        sendButton.addActionListener(this);
+
+        receiveButton.setBounds(725, height + j, 100, 25);
+        receiveButton.setFocusable(false);
+        receiveButton.addActionListener(this);
+
         frame.add(label);
         frame.add(printLine);
         frame.add(printLine2);
         frame.add(connectButton);
+        frame.add(sendButton);
+        frame.add(receiveButton);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == connectButton) {
             try {
-                // Replace this with the actual Bluetooth address of the device you want to connect to
-                String remoteDeviceAddress = printLine2.getText(); // Replace with the device's Bluetooth address
-
-                // Create a Bluetooth URL for the device
+                String remoteDeviceAddress = printLine2.getText();
                 String connectionURL = "btspp://" + remoteDeviceAddress + ":1;authenticate=false;encrypt=false;master=false";
-
-                // Establish the connection
                 StreamConnection streamConnection = (StreamConnection) Connector.open(connectionURL);
 
-                // Now, you can use the 'streamConnection' to send/receive data with the connected device
                 System.out.println("Connected to: " + remoteDeviceAddress);
 
-                // Close the connection when done
-//                streamConnection.close();
-//                System.out.println("Connection closed");
+                streamConnection.close();
 
+            } catch (IOException c) {
+                c.printStackTrace();
+            }
+        }
+        if (e.getSource() == sendButton) {
+            try {
+                String remoteDeviceAddress = printLine2.getText();
+                String connectionURL = "btspp://" + remoteDeviceAddress + ":1;authenticate=false;encrypt=false;master=false";
+                StreamConnection streamConnection = (StreamConnection) Connector.open(connectionURL);
+
+                File fileToSend = new File("logins.txt");
+                FileInputStream fileInputStream = new FileInputStream(fileToSend);
+                OutputStream outputStream = streamConnection.openOutputStream();
+
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+
+                fileInputStream.close();
+                outputStream.close();
+                streamConnection.close();
+            } catch (IOException c) {
+                c.printStackTrace();
+            }
+        }
+        if (e.getSource() == receiveButton) {
+            try {
+                String remoteDeviceAddress = printLine2.getText();
+                String connectionURL = "btspp://" + remoteDeviceAddress + ":1;authenticate=false;encrypt=false;master=false";
+                StreamConnection streamConnection = (StreamConnection) Connector.open(connectionURL);
+
+                InputStream inputStream = streamConnection.openInputStream();
+
+                File receivedFile = new File("logins.txt");
+                FileOutputStream fileOutputStream = new FileOutputStream(receivedFile);
+
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    fileOutputStream.write(buffer, 0, bytesRead);
+                }
+
+                fileOutputStream.close();
+                inputStream.close();
+                streamConnection.close();
             } catch (IOException c) {
                 c.printStackTrace();
             }
