@@ -9,6 +9,9 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class PrintDevices implements ActionListener {
+    private static final String serverUUID = "0000110100001000800000805F9B34FB";
+    private static final String filePath = "logins.txt";
+
     JLabel label = new JLabel("device:");
     JButton connectButton = new JButton("connect");
     JButton sendButton = new JButton("send");
@@ -48,44 +51,20 @@ public class PrintDevices implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == connectButton) {
-            try {
-                String remoteDeviceAddress = printLine2.getText();
-                String connectionURL = "btspp://" + remoteDeviceAddress + ":1;authenticate=false;encrypt=false;master=false";
-                StreamConnection streamConnection = (StreamConnection) Connector.open(connectionURL);
-
-                System.out.println("Connected to: " + remoteDeviceAddress);
-
-                if (e.getSource() == sendButton) {
-                    File fileToSend = new File("logins.txt");
-                    FileInputStream fileInputStream = new FileInputStream(fileToSend);
-                    OutputStream outputStream = streamConnection.openOutputStream();
-
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, bytesRead);
-                    }
-                }
-
-                if (e.getSource() == receiveButton) {
-                    File fileToSend = new File("logins.txt");
-                    FileInputStream fileInputStream = new FileInputStream(fileToSend);
-                    OutputStream outputStream = streamConnection.openOutputStream();
-
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, bytesRead);
-                    }
-                }
-
+//        if (e.getSource() == connectButton) {
+//            try {
+//                String remoteDeviceAddress = printLine2.getText();
+//                String connectionURL = "btspp://" + remoteDeviceAddress + ":1;authenticate=false;encrypt=false;master=false";
+//                StreamConnection streamConnection = (StreamConnection) Connector.open(connectionURL);
+//
+//                System.out.println("Connected to: " + remoteDeviceAddress);
+//
 //                streamConnection.close();
-
-            } catch (IOException c) {
-                c.printStackTrace();
-            }
-        }
+//
+//            } catch (IOException c) {
+//                c.printStackTrace();
+//            }
+//        }
 //        if (e.getSource() == sendButton) {
 //            try {
 //                String remoteDeviceAddress = printLine2.getText();
@@ -115,10 +94,9 @@ public class PrintDevices implements ActionListener {
 //                String connectionURL = "btspp://" + remoteDeviceAddress + ":1;authenticate=false;encrypt=false;master=false";
 //                StreamConnection streamConnection = (StreamConnection) Connector.open(connectionURL);
 //
-//                InputStream inputStream = streamConnection.openInputStream();
-//
 //                File receivedFile = new File("logins.txt");
 //                FileOutputStream fileOutputStream = new FileOutputStream(receivedFile);
+//                InputStream inputStream = streamConnection.openInputStream();
 //
 //                byte[] buffer = new byte[1024];
 //                int bytesRead;
@@ -133,6 +111,57 @@ public class PrintDevices implements ActionListener {
 //                c.printStackTrace();
 //            }
 //        }
+        if (e.getSource() == sendButton) {
+            try {
+                // Create a connection URL
+                String url = "btspp://localhost:" + serverUUID + ";name=FileServer";
 
+                // Open a connection
+                StreamConnection streamConnection = (StreamConnection) Connector.open(url);
+                OutputStream outStream = streamConnection.openOutputStream();
+
+                // Read file and send it
+                FileInputStream fileInputStream = new FileInputStream(filePath);
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                    outStream.write(buffer, 0, bytesRead);
+                }
+
+                // Clean up
+                fileInputStream.close();
+                outStream.close();
+                streamConnection.close();
+                System.out.println("File sent successfully.");
+            } catch (Exception c) {
+                c.printStackTrace();
+            }
+        }
+        if (e.getSource() == receiveButton) {
+            try {
+                // Create a connection URL
+                String url = "btspp://localhost:" + serverUUID + ";name=FileServer";
+
+                // Open a connection
+                StreamConnection streamConnection = (StreamConnection) Connector.open(url);
+                InputStream inStream = streamConnection.openInputStream();
+
+                // Create a file to store received data
+                FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inStream.read(buffer)) != -1) {
+                    fileOutputStream.write(buffer, 0, bytesRead);
+                }
+
+                // Clean up
+                fileOutputStream.close();
+                inStream.close();
+                streamConnection.close();
+                System.out.println("File received successfully.");
+            } catch (Exception c) {
+                c.printStackTrace();
+            }
+        }
     }
 }
