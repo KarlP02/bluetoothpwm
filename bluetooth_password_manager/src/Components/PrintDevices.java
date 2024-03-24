@@ -70,12 +70,12 @@ public class PrintDevices implements ActionListener {
                     outputStream.write(buffer, 0, bytesRead);
                 }
 
+                System.out.println("File sent successfully.");
+
                 fileInputStream.close();
                 outputStream.close();
                 connection.close();
                 notifier.close();
-
-                System.out.println("File received successfully.");
             } catch (Exception c) {
                 c.printStackTrace();
             }
@@ -86,10 +86,10 @@ public class PrintDevices implements ActionListener {
                 String connectionURL = "btspp://" + remoteDeviceAddress + ":4;authenticate=false;encrypt=false;master=false";
                 StreamConnection streamConnection = (StreamConnection) Connector.open(connectionURL);
 
-                File receivedFile = new File("logins.txt");
-                FileOutputStream fileOutputStream = new FileOutputStream(receivedFile);
                 InputStream inputStream = streamConnection.openInputStream();
 
+                File receivedFile = new File("logins.txt");
+                FileOutputStream fileOutputStream = new FileOutputStream(receivedFile);
                 byte[] buffer = new byte[1024];
                 int bytesRead;
                 while ((bytesRead = inputStream.read(buffer)) != -1) {
