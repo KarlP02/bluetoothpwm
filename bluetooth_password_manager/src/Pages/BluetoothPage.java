@@ -8,10 +8,10 @@ import java.awt.event.ActionListener;
 
 public class BluetoothPage implements ActionListener {
     JFrame frame = new JFrame();
-    JButton findDevices = new JButton("find devices");
+    JButton findDevices = new JButton("find");
 
     BluetoothPage() {
-        findDevices.setBounds(10, 10, 120, 25);
+        findDevices.setBounds(10, 10, 100, 25);
         findDevices.setFocusable(false);
         findDevices.addActionListener(this);
 
