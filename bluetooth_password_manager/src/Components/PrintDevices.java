@@ -14,7 +14,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class PrintDevices implements ActionListener {
-    private static final String serverUUID = "0000110100001000800000805F9B34FB";
+    private static final String serverUUID = "2d26618601fb47c28d9f10b8ec891363";
     UUID uuid = new UUID(serverUUID, false);
 
     JLabel label = new JLabel("device:");
@@ -118,7 +118,8 @@ public class PrintDevices implements ActionListener {
 //        }
         if (e.getSource() == sendButton) {
             try {
-                StreamConnectionNotifier notifier = (StreamConnectionNotifier) Connector.open("btspp://localhost:" + uuid + ";authenticate=false;encrypt=false;name=FileServer");
+                String connectionURL = "btspp://localhost:" + uuid.toString() + ";authenticate=false;encrypt=false;name=FileServer";
+                StreamConnectionNotifier notifier = (StreamConnectionNotifier) Connector.open(connectionURL);
 
                 System.out.println("Waiting for connection...");
                 StreamConnection connection = notifier.acceptAndOpen();
@@ -146,7 +147,7 @@ public class PrintDevices implements ActionListener {
         if (e.getSource() == receiveButton) {
             try {
                 String remoteDeviceAddress = printLine2.getText();
-                String connectionURL = "btspp://" + remoteDeviceAddress + ":" + uuid + ":1;authenticate=false;encrypt=false;master=false";
+                String connectionURL = "btspp://" + remoteDeviceAddress + ":1;authenticate=false;encrypt=false;master=false";
                 StreamConnection streamConnection = (StreamConnection) Connector.open(connectionURL);
 
                 File receivedFile = new File("logins.txt");
