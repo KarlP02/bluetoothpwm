@@ -63,16 +63,26 @@ public class PrintDevices implements ActionListener {
 
                 OutputStream outputStream = connection.openOutputStream();
 
-                FileInputStream fileInputStream = new FileInputStream("logins.txt");
+                File fileToSend = new File("logins.txt");
+                FileInputStream fileInputStream = new FileInputStream(fileToSend);
                 byte[] buffer = new byte[1024];
                 int bytesRead;
                 while ((bytesRead = fileInputStream.read(buffer)) != -1) {
                     outputStream.write(buffer, 0, bytesRead);
                 }
 
-                System.out.println("File sent successfully.");
+                File fileToSend2 = new File("loginsKeys.txt");
+                FileInputStream fileInputStream2 = new FileInputStream(fileToSend2);
+                byte[] buffer2 = new byte[1024];
+                int bytesRead2;
+                while ((bytesRead2 = fileInputStream2.read(buffer2)) != -1) {
+                    outputStream.write(buffer2, 0, bytesRead2);
+                }
+
+                System.out.println("Files sent successfully.");
 
                 fileInputStream.close();
+                fileInputStream2.close();
                 outputStream.close();
                 connection.close();
                 notifier.close();
@@ -88,17 +98,26 @@ public class PrintDevices implements ActionListener {
 
                 InputStream inputStream = streamConnection.openInputStream();
 
-                File receivedFile = new File("logins.txt");
-                FileOutputStream fileOutputStream = new FileOutputStream(receivedFile);
+                File fileToReceive = new File("logins.txt");
+                FileOutputStream fileOutputStream = new FileOutputStream(fileToReceive);
                 byte[] buffer = new byte[1024];
                 int bytesRead;
                 while ((bytesRead = inputStream.read(buffer)) != -1) {
                     fileOutputStream.write(buffer, 0, bytesRead);
                 }
 
-                System.out.println("File received successfully");
+                File fileToReceive2 = new File("loginsKeys.txt");
+                FileOutputStream fileOutputStream2 = new FileOutputStream(fileToReceive2);
+                byte[] buffer2 = new byte[1024];
+                int bytesRead2;
+                while ((bytesRead2 = inputStream.read(buffer2)) != -1) {
+                    fileOutputStream2.write(buffer2, 0, bytesRead2);
+                }
+
+                System.out.println("Files received successfully");
 
                 fileOutputStream.close();
+                fileOutputStream2.close();
                 inputStream.close();
                 streamConnection.close();
             } catch (Exception c) {

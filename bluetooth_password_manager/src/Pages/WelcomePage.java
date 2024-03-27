@@ -33,16 +33,17 @@ public class WelcomePage implements ActionListener {
         try {
             reader = new BufferedReader(new FileReader("logins.txt"));
             String line;
+            int whichFile = 1;
             int i = 0;
             int j = 0;
-            int k = 5;
+            int k = 1;
             int height = 50;
 
             while ((line = reader.readLine()) != null) {
                 if (i == 0) {
                     JLabel label = new JLabel("title:");
                     label.setBounds(10, height + j, 75, 25);
-                    String decryptedString = decryption.Decryption(k, line);
+                    String decryptedString = decryption.Decryption(k, line, whichFile);
                     PrintInfo printInfo = new PrintInfo(height, j, decryptedString, frame);
                     k += 2;
 
@@ -51,7 +52,7 @@ public class WelcomePage implements ActionListener {
                 if (i == 1) {
                     JLabel label = new JLabel("login:");
                     label.setBounds(10, height + j, 75, 25);
-                    String decryptedString = decryption.Decryption(k, line);
+                    String decryptedString = decryption.Decryption(k, line, whichFile);
                     PrintInfo printInfo = new PrintInfo(height, j, decryptedString, frame);
                     k += 2;
 
@@ -60,7 +61,7 @@ public class WelcomePage implements ActionListener {
                 if (i == 2) {
                     JLabel label = new JLabel("password:");
                     label.setBounds(10, height + j, 75, 25);
-                    String decryptedString = decryption.Decryption(k, line);
+                    String decryptedString = decryption.Decryption(k, line, whichFile);
                     PrintPW printPW = new PrintPW(height, j, decryptedString, frame);
                     k += 2;
 

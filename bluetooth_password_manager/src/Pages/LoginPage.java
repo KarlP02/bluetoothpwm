@@ -67,17 +67,18 @@ public class LoginPage implements ActionListener
             try {
                 reader = new BufferedReader(new FileReader("mainLogin.txt"));
                 String line;
+                int whichFile = 0;
                 int i = 0;
                 int k = 1;
                 while ((line = reader.readLine()) != null) {
                     if (i == 0) {
                         fileID = line;
-                        decryptedID = decryption.Decryption(k, fileID);
+                        decryptedID = decryption.Decryption(k, fileID, whichFile);
                         k += 2;
                     }
                     if (i == 1) {
                         filePassword = line;
-                        decryptedPassword = decryption.Decryption(k, filePassword);
+                        decryptedPassword = decryption.Decryption(k, filePassword, whichFile);
                     }
                     i++;
                 }

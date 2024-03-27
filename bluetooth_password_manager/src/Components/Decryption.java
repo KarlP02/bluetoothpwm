@@ -11,9 +11,15 @@ public class Decryption {
     String iv;
     String decryptedString;
 
-    public String Decryption(int lineNumber, String lineString) {
+    public String Decryption(int lineNumber, String lineString, int whichFile) {
         try {
-            reader = new BufferedReader(new FileReader("loginsKeys.txt"));
+            reader = null;
+            if (whichFile == 0) {
+                reader = new BufferedReader(new FileReader("mainLoginKeys.txt"));
+            }
+            if (whichFile == 1) {
+                reader = new BufferedReader(new FileReader("loginsKeys.txt"));
+            }
             String line;
             int currentLine = 1;
 

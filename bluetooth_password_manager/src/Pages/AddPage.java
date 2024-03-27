@@ -70,9 +70,11 @@ public class AddPage implements ActionListener {
                 if (!login.isEmpty()) {
                     if (!password.isEmpty()) {
                         try {
-                            String encryptedTitle = encryption.Encryption(title);
-                            String encryptedLogin = encryption.Encryption(login);
-                            String encryptedPassword = encryption.Encryption(password);
+                            int whichFile = 1;
+
+                            String encryptedTitle = encryption.Encryption(title, whichFile);
+                            String encryptedLogin = encryption.Encryption(login, whichFile);
+                            String encryptedPassword = encryption.Encryption(password, whichFile);
 
                             writer = new BufferedWriter(new FileWriter("logins.txt", true));
                             writer.write(encryptedTitle + "\n");

@@ -70,9 +70,14 @@ public class RegisterPage implements ActionListener {
                 if (password1.length() >= 12 && password1.length() <= 50) {
                     if (password1.equals(password2)) {
                         try {
+                            int whichFile = 0;
+
                             File mainLoginFile = new File("mainLogin.txt");
                             mainLoginFile.delete();
                             mainLoginFile.createNewFile();
+                            File mainLoginKeysFile = new File("mainLoginKeys.txt");
+                            mainLoginKeysFile.delete();
+                            mainLoginKeysFile.createNewFile();
                             File loginsFile = new File("logins.txt");
                             loginsFile.delete();
                             loginsFile.createNewFile();
@@ -80,8 +85,8 @@ public class RegisterPage implements ActionListener {
                             loginsKeysFile.delete();
                             loginsKeysFile.createNewFile();
 
-                            String encryptedLogin = encryption.Encryption(userID);
-                            String encryptedPassword = encryption.Encryption(password2);
+                            String encryptedLogin = encryption.Encryption(userID,whichFile);
+                            String encryptedPassword = encryption.Encryption(password2, whichFile);
 
                             writer = new BufferedWriter(new FileWriter("mainLogin.txt"));
                             writer.write(encryptedLogin + "\n");
