@@ -70,6 +70,7 @@ public class PrintDevices implements ActionListener {
                 while ((bytesRead = fileInputStream.read(buffer)) != -1) {
                     outputStream.write(buffer, 0, bytesRead);
                 }
+                fileInputStream.close();
 
                 File fileToSend2 = new File("loginsKeys.txt");
                 FileInputStream fileInputStream2 = new FileInputStream(fileToSend2);
@@ -78,11 +79,10 @@ public class PrintDevices implements ActionListener {
                 while ((bytesRead2 = fileInputStream2.read(buffer2)) != -1) {
                     outputStream.write(buffer2, 0, bytesRead2);
                 }
+                fileInputStream2.close();
 
                 System.out.println("Files sent successfully.");
 
-                fileInputStream.close();
-                fileInputStream2.close();
                 outputStream.close();
                 connection.close();
                 notifier.close();
@@ -105,6 +105,7 @@ public class PrintDevices implements ActionListener {
                 while ((bytesRead = inputStream.read(buffer)) != -1) {
                     fileOutputStream.write(buffer, 0, bytesRead);
                 }
+                fileOutputStream.close();
 
                 File fileToReceive2 = new File("loginsKeys.txt");
                 FileOutputStream fileOutputStream2 = new FileOutputStream(fileToReceive2);
@@ -113,11 +114,10 @@ public class PrintDevices implements ActionListener {
                 while ((bytesRead2 = inputStream.read(buffer2)) != -1) {
                     fileOutputStream2.write(buffer2, 0, bytesRead2);
                 }
+                fileOutputStream2.close();
 
                 System.out.println("Files received successfully");
 
-                fileOutputStream.close();
-                fileOutputStream2.close();
                 inputStream.close();
                 streamConnection.close();
             } catch (Exception c) {
