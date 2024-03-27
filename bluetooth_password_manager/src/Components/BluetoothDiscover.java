@@ -57,7 +57,7 @@ public class BluetoothDiscover {
             int height = 50;
             for (String device : devices) {
                 PrintDevices printDevices = new PrintDevices(i, j, height, device, deviceAddress, frame);
-                j += 25;
+                j += 75;
                 i++;
             }
 

@@ -17,10 +17,12 @@ import java.util.ArrayList;
 public class PrintDevices implements ActionListener {
     private static final String serverUUID = "2d26618601fb47c28d9f10b8ec891363";
     UUID uuid = new UUID(serverUUID, false);
-
+    SendAndReceive sendAndReceive = new SendAndReceive();
     JLabel label = new JLabel("device:");
-    JButton sendButton = new JButton("send");
-    JButton receiveButton = new JButton("receive");
+    JButton sendLoginButton = new JButton("send login");
+    JButton receiveLoginButton = new JButton("receive login");
+    JButton sendLoginKeysButton = new JButton("send keys");
+    JButton receiveLoginKeysButton = new JButton("receive keys");
     JLabel printLine = new JLabel();
     JLabel printLine2 = new JLabel();
 
@@ -34,95 +36,50 @@ public class PrintDevices implements ActionListener {
         printLine2.setBounds(300, height + j, 200, 25);
         printLine2.setText(deviceAddress.get(i));
 
-        sendButton.setBounds(525, height + j, 100, 25);
-        sendButton.setFocusable(false);
-        sendButton.addActionListener(this);
+        sendLoginButton.setBounds(525, height + j, 100, 25);
+        sendLoginButton.setFocusable(false);
+        sendLoginButton.addActionListener(this);
 
-        receiveButton.setBounds(625, height + j, 100, 25);
-        receiveButton.setFocusable(false);
-        receiveButton.addActionListener(this);
+        sendLoginKeysButton.setBounds(525, height + j + 25, 100, 25);
+        sendLoginKeysButton.setFocusable(false);
+        sendLoginKeysButton.addActionListener(this);
+
+        receiveLoginButton.setBounds(625, height + j, 150, 25);
+        receiveLoginButton.setFocusable(false);
+        receiveLoginButton.addActionListener(this);
+
+        receiveLoginKeysButton.setBounds(625, height + j + 25, 150, 25);
+        receiveLoginKeysButton.setFocusable(false);
+        receiveLoginKeysButton.addActionListener(this);
 
         frame.add(label);
         frame.add(printLine);
         frame.add(printLine2);
-        frame.add(sendButton);
-        frame.add(receiveButton);
+        frame.add(sendLoginButton);
+        frame.add(receiveLoginButton);
+        frame.add(sendLoginKeysButton);
+        frame.add(receiveLoginKeysButton);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == sendButton) {
-            try {
-                String connectionURL = "btspp://localhost:" + uuid.toString() + ";authenticate=false;encrypt=false;name=FileServer";
-                StreamConnectionNotifier notifier = (StreamConnectionNotifier) Connector.open(connectionURL);
-
-                System.out.println("Waiting for connection...");
-                StreamConnection connection = notifier.acceptAndOpen();
-                RemoteDevice remoteDevice = RemoteDevice.getRemoteDevice(connection);
-                System.out.println("Client connected " + remoteDevice.getFriendlyName(false));
-
-                OutputStream outputStream = connection.openOutputStream();
-
-                File fileToSend = new File("logins.txt");
-                FileInputStream fileInputStream = new FileInputStream(fileToSend);
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);
-                }
-
-                File fileToSend2 = new File("loginsKeys.txt");
-                FileInputStream fileInputStream2 = new FileInputStream(fileToSend2);
-                byte[] buffer2 = new byte[1024];
-                int bytesRead2;
-                while ((bytesRead2 = fileInputStream2.read(buffer2)) != -1) {
-                    outputStream.write(buffer2, 0, bytesRead2);
-                }
-
-                System.out.println("Files sent successfully.");
-                fileInputStream.close();
-                fileInputStream2.close();
-                outputStream.close();
-                connection.close();
-                notifier.close();
-            } catch (Exception c) {
-                c.printStackTrace();
-            }
+        if (e.getSource() == sendLoginButton) {
+            File fileToSend = new File("logins.txt");
+            sendAndReceive.SendFile(uuid, fileToSend);
         }
-        if (e.getSource() == receiveButton) {
-            try {
-                String remoteDeviceAddress = printLine2.getText();
-                String connectionURL = "btspp://" + remoteDeviceAddress + ":4;authenticate=false;encrypt=false;master=false";
-                StreamConnection streamConnection = (StreamConnection) Connector.open(connectionURL);
-
-                InputStream inputStream = streamConnection.openInputStream();
-                File fileToReceive = new File("logins.txt");
-                FileOutputStream fileOutputStream = new FileOutputStream(fileToReceive);
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    fileOutputStream.write(buffer, 0, bytesRead);
-                }
-                fileOutputStream.close();
-                inputStream.close();
-
-                InputStream inputStream2 = streamConnection.openInputStream();
-                File fileToReceive2 = new File("loginsKeys.txt");
-                FileOutputStream fileOutputStream2 = new FileOutputStream(fileToReceive2);
-                byte[] buffer2 = new byte[1024];
-                int bytesRead2;
-                while ((bytesRead2 = inputStream2.read(buffer2)) != -1) {
-                    fileOutputStream2.write(buffer2, 0, bytesRead2);
-                }
-                fileOutputStream2.close();
-                inputStream2.close();
-
-                System.out.println("Files received successfully");
-
-                streamConnection.close();
-            } catch (Exception c) {
-                c.printStackTrace();
-            }
+        if (e.getSource() == sendLoginKeysButton) {
+            File fileToSend = new File("loginsKeys.txt");
+            sendAndReceive.SendFile(uuid, fileToSend);
+        }
+        if (e.getSource() == receiveLoginButton) {
+            String remoteDeviceAddress = printLine2.getText();
+            File fileToReceive = new File("logins.txt");
+            sendAndReceive.ReceiveFile(remoteDeviceAddress, fileToReceive);
+        }
+        if (e.getSource() == receiveLoginKeysButton) {
+            String remoteDeviceAddress = printLine2.getText();
+            File fileToReceive = new File("loginsKeys.txt");
+            sendAndReceive.ReceiveFile(remoteDeviceAddress, fileToReceive);
         }
     }
 }
