@@ -7,11 +7,6 @@ import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
-/**
- * Possible KEY_SIZE values are 128, 192 and 256
- * Possible T_LEN values are 128, 120, 112, 104 and 96
- */
-
 public class Cryption {
     private SecretKey key;
     private final int KEY_SIZE = 128;
@@ -27,15 +22,6 @@ public class Cryption {
     public void initWithStrings(String secretKey, String IV) {
         key = new SecretKeySpec(decode(secretKey), "AES");
         this.IV = decode(IV);
-    }
-
-    public String encryptWithKeys(String message) throws Exception {
-        byte[] messageInBytes = message.getBytes();
-        Cipher encryptionCipher = Cipher.getInstance("AES/GCM/NoPadding");
-        GCMParameterSpec spec = new GCMParameterSpec(T_LEN, IV);
-        encryptionCipher.init(Cipher.ENCRYPT_MODE, key, spec);
-        byte[] encryptedBytes = encryptionCipher.doFinal(messageInBytes);
-        return encode(encryptedBytes);
     }
 
     public String encrypt(String message) throws Exception {
@@ -55,6 +41,7 @@ public class Cryption {
         byte[] decryptedBytes = decryptionCipher.doFinal(messageInBytes);
         return new String(decryptedBytes);
     }
+
     private String encode(byte[] data) {
         return Base64.getEncoder().encodeToString(data);
     }
