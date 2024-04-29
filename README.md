@@ -1,5 +1,5 @@
 # bluetoothpwm
-This is a password manager app that saves data locally to the user's device and is able to share said data using Bluetooth
+This is a password manager app that saves data locally to the user's device and is able to share said data using Bluetooth.
 
 # Installation
 To use the app you must install the source code and add a JDK (version 21 was used when making) to the project. You must also add the BlueCove version 2.1.1 library.
